@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall">
+
+    <TextView
+        android:id="@+id/playlist_edit_ItemTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/playlist_edit_up"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@android:color/transparent"
+        android:layout_gravity="center_vertical"
+        android:src="@android:drawable/arrow_up_float" />
+
+    <ImageButton
+        android:id="@+id/playlist_edit_down"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@android:color/transparent"
+        android:layout_gravity="center_vertical"
+        android:src="@android:drawable/arrow_down_float" />
+
+    <ImageButton
+        android:id="@+id/playlist_edit_Remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_gravity="center_vertical"
+        android:src="@android:drawable/ic_menu_delete" />
+
+</LinearLayout>

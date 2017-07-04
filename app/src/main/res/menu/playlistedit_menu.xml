@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/playlistmenu_add"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/addfiles"
+        />
+    <item
+        android:id="@+id/playlistmenu_save"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/save"
+        />
+    <item
+        android:id="@+id/playlistmenu_addfold"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_slideshow"
+        android:title="@string/addfold"
+        android:visible="false"
+        />
+</menu>
