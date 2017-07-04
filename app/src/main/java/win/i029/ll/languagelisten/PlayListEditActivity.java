@@ -197,9 +197,11 @@ public class PlayListEditActivity extends AppCompatActivity {
                         if(isSeeking==true) {
                             return;
                         }
-                        int cur = mVoicePlay.getCurrentPosition();
-                        mVoiceSeekBar.setProgress(cur);
-                        mVoiceTime.setText(String.format("%d / %d" , cur/ 1000 ,mDuration / 1000));
+                        if(mVoicePlay != null ) {
+                            int cur = mVoicePlay.getCurrentPosition();
+                            mVoiceSeekBar.setProgress(cur);
+                            mVoiceTime.setText(String.format("%d / %d", cur / 1000, mDuration / 1000));
+                        }
                         break;
                     default:
                         break;
@@ -328,16 +330,22 @@ public class PlayListEditActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(mTimer == null) {
-            mTimer = new Timer();
-            mTimerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    Message message = Message.obtain(mHandler, UPDATE_PROGRESS);
-                    mHandler.sendMessage(message);
+        switch(mOperateType) {
+            case PlayControl.ItemOperate_Play:
+                if (mTimer == null) {
+                    mTimer = new Timer();
+                    mTimerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            Message message = Message.obtain(mHandler, UPDATE_PROGRESS);
+                            mHandler.sendMessage(message);
+                        }
+                    };
+                    mTimer.schedule(mTimerTask, 0, 200);
                 }
-            };
-            mTimer.schedule(mTimerTask, 0, 200);
+                break;
+            default:
+                break;
         }
 
     }
@@ -361,6 +369,7 @@ public class PlayListEditActivity extends AppCompatActivity {
         super.onDestroy();
         if(mVoicePlay != null) {
             mVoicePlay.release();
+            mVoicePlay = null;
         }
     }
 
