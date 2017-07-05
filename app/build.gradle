@@ -10,6 +10,19 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk{
+            moduleName "soundTouchLib"
+            abiFilters "armeabi","armeabi-v7a","x86"
+        }
+    }
+    sourceSets {
+        main {
+            // run in Android studio terminal :
+            // LanguageListen/app/src/main/jni$ ndk-build
+
+            jni.srcDirs = [] // disable android studio auto build
+            jniLibs.srcDir 'src/main/libs'
+        }
     }
     buildTypes {
         release {

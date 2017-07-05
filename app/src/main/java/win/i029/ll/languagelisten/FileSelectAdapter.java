@@ -36,8 +36,6 @@ public class FileSelectAdapter  extends BaseAdapter {
     private final Context mContext;
     private ArrayList<FileItem> mFilelist = new ArrayList<FileItem>();
 
-    private ProgressDialog mProgressDialog = null;
-
     public FileSelectAdapter(Context context , File root) {
         mContext = context;
         this.mInflater = LayoutInflater.from(context);
@@ -213,12 +211,7 @@ public class FileSelectAdapter  extends BaseAdapter {
         if(mScanTask == null) {
             mScanTask = new ScanFolderTask();
 
-            mProgressDialog = new ProgressDialog(mContext);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setMessage("... ...");
-            mProgressDialog.setIndeterminate(false);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.show();
+
 
             mScanTask.execute(file);
             return 0;
@@ -232,6 +225,20 @@ public class FileSelectAdapter  extends BaseAdapter {
 
     private class ScanFolderTask extends AsyncTask<File, Integer, ArrayList<FileItem>> {
         private String mDir = "";
+        private ProgressDialog mProgressDialog = null;
+        public ScanFolderTask() {
+            mProgressDialog = new ProgressDialog(mContext);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setMessage("... ...");
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.setCancelable(false);
+        }
+        @Override
+        protected void onPreExecute() {
+
+            mProgressDialog.show();
+        }
+
         @Override
         protected ArrayList<FileItem> doInBackground(File... params) {
 

@@ -25,11 +25,10 @@ public class VoicePlay {
     private boolean mIsPaused = false;
     private OnEventListener mOnEventListener;
 
-    private float mRate = 1.0f;
-    private float mVolume = 1.0f;
 
     private boolean mStoped = false;
 
+    private String lastPath = "";
     public interface OnEventListener
     {
         void onCompletion();
@@ -50,11 +49,16 @@ public class VoicePlay {
         }
 
         try {
+            int lastPos = 0;
+            if(path.equals(lastPath)) {
+                lastPos = mMediaPlayer.getCurrentPosition();
+            }
             mMediaPlayer.reset();
 
             mMediaPlayer.setDataSource(path);
             mMediaPlayer.prepare();
             mMediaPlayer.setLooping(false);
+            mMediaPlayer.seekTo(lastPos);
             mStoped = false;
             mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
@@ -90,12 +94,7 @@ public class VoicePlay {
     }
 
 
-    public void setVolume(float volume) {
-        mMediaPlayer.setVolume(volume, volume);
-        mVolume = volume;
-
-    }
-    public int play(float rate) {
+    public int play() {
         mMediaPlayer.start();
         return ERROR_UNKNOWN;
     }
@@ -128,7 +127,11 @@ public class VoicePlay {
         return ERROR_OK;
     }
 
+
     public int stop() {
+        if( mMediaPlayer != null) {
+            mMediaPlayer.stop();
+        }
         return ERROR_OK;
     }
 

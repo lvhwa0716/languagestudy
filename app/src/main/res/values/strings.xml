@@ -9,4 +9,6 @@
     <string name="tips_entername">Enter Name</string>
     <string name="tips_dupicatename">Duplicate Name</string>
     <string name="tips_nameisempty">must not empty</string>
+    <string name="set_speed"> Set Speed </string>
+
 </resources>

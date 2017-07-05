@@ -7,15 +7,6 @@
     android:layout_marginRight="20dip"
     android:layout_marginTop="10dip"
     android:orientation="vertical">
-
-    <SeekBar
-        android:id="@+id/id_voice_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dip"
-         />
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +33,28 @@
             android:background= "@android:color/transparent"
             android:text="--/--" />
     </LinearLayout>
+    <SeekBar
+        android:id="@+id/id_voice_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dip"
+         />
 
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background= "@android:color/transparent"
+        android:text="@string/set_speed" />
+    <SeekBar
+        android:id="@+id/id_voice_tempo"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dip"
+        />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
