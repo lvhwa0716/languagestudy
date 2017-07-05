@@ -43,6 +43,12 @@ public class VoicePlay {
         mStoped = false;
     }
 
+    public boolean isChanged(String path) {
+        if(path.equals(lastPath)) {
+           return false;
+        }
+        return true;
+    }
     public int load(String path) {
         if(mMediaPlayer == null) {
             mMediaPlayer = new MediaPlayer();
@@ -53,6 +59,8 @@ public class VoicePlay {
             if(path.equals(lastPath)) {
                 lastPos = mMediaPlayer.getCurrentPosition();
             }
+            lastPath = path;
+
             mMediaPlayer.reset();
 
             mMediaPlayer.setDataSource(path);

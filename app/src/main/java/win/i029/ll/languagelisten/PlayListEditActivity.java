@@ -562,17 +562,14 @@ public class PlayListEditActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer result) {
             mProgressDialog.dismiss();
-
-            if (result == 0) {
-
-                mVoicePlay.load(mParams.out);
-                mDuration = mVoicePlay.getDuration();
-                mVoiceSeekBar.setMax(mDuration);
+            if( result >= 0) {
+                if( mVoicePlay.isChanged(mParams.out) ) {
+                    mVoicePlay.load(mParams.out);
+                    mDuration = mVoicePlay.getDuration();
+                    mVoiceSeekBar.setMax(mDuration);
+                }
                 PlayListEditActivity.this.play();
 
-            } else if (result == 1) {
-
-                PlayListEditActivity.this.play();
             } else {
                 Toast.makeText(PlayListEditActivity.this, "转化错误", Toast.LENGTH_SHORT).show();
             }
