@@ -65,7 +65,7 @@ public class FileSelectActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
         if (mAdapter.toUp() < 0) {
             FileSelectActivity.this.setResult(RESULT_CANCELED);
             FileSelectActivity.this.finish();
