@@ -12,4 +12,5 @@
     <string name="set_speed"> 设置播放速度 </string>
     <string name="converting"> 正在转化 &#8230;  </string>
     <string name="scaning"> 读取中 &#8230;  </string>
+    <string name="query_delete"> 确认删除 ?  </string>
 </resources>

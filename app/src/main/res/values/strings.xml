@@ -12,4 +12,5 @@
     <string name="set_speed"> Set Speed </string>
     <string name="converting"> Convert &#8230;  </string>
     <string name="scaning"> Scaning &#8230;  </string>
+    <string name="query_delete"> Delete sure?  </string>
 </resources>
