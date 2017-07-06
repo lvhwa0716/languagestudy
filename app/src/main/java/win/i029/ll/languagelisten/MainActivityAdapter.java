@@ -85,10 +85,10 @@ public class MainActivityAdapter extends BaseAdapter {
 
         if( mPlayControl.getActiveListPos() == position ) {
             holder.title.setTextColor(0xFF99CC33);
-            holder.remove.setEnabled(false);
+            //holder.remove.setEnabled(false);
         } else {
             holder.title.setTextColor(0xFF000000);
-            holder.remove.setEnabled(true);
+            //holder.remove.setEnabled(true);
         }
 
 

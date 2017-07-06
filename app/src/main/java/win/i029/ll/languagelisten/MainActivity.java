@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             intent.setClass(MainActivity.this, PlayListEditActivity.class);
             intent.putExtra(PlayControl.KEY_ItemIndex, position);
             intent.putExtra(PlayControl.KEY_ItemOperationType, PlayControl.ItemOperate_Play);
+            PlayControl.getInstance().setActiveListPos(position);
+            mAdapter.notifyDataSetChanged();
             startActivity(intent);
 
             }
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         PlayControl.getInstance().loadHistory(mSharedPref);
+        mPlayListView.setSelection(PlayControl.getInstance().getActiveListPos());
     }
 
     @Override
