@@ -45,4 +45,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
+    compile 'org.slf4j:slf4j-android:1.7.25'
 }

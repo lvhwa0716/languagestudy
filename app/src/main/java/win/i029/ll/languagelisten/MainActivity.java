@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int ONRESULT_EDIT_COMPLETED = 1;
 
     public static String mStorePath = "";
-
+    public static String mCachePath = "";
     @BindView(R.id.id_playlist)
     ListView mPlayListView;
 
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mStorePath = getFilesDir().getPath();
+        mCachePath = getCacheDir().getPath();
+
         mSharedPref = getSharedPreferences("playstatus", Activity.MODE_PRIVATE);
         mAdapter = new MainActivityAdapter(this);
         mPlayListView.setAdapter(mAdapter);

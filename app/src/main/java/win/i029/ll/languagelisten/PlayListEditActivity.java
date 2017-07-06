@@ -88,6 +88,7 @@ public class PlayListEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_play_list_edit);
         ButterKnife.bind(this);
         mTempoSeekBar.setMax(TEMPO_LENGTH - 1);
@@ -110,7 +111,7 @@ public class PlayListEditActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (seekBar.getProgress() != oldPos) {
-                    if (0 == getTempo()) {
+                    if (TEMPO_IGNORE == getTempo()) {
                         load(mPosition);
                         play();
                     } else {
@@ -129,7 +130,7 @@ public class PlayListEditActivity extends AppCompatActivity {
                         pause(false, -1);
                     } else {
                         int tempo = getTempo();
-                        if (tempo == 0) {
+                        if (tempo == TEMPO_IGNORE) {
                             play();
                         } else {
                             loadWithTempo(mPosition, tempo);
@@ -427,18 +428,42 @@ public class PlayListEditActivity extends AppCompatActivity {
             mVoicePlay.release();
             mVoicePlay = null;
         }
+        File cachedDir = new File(getTempoPath());
+        for( File f : cachedDir.listFiles()) {
+            if (f.isFile() && f.getName().endsWith(".wav")) {
+                try {
+                    f.delete();
+                } catch (Exception e) {
+                    Log.e(TAG , "Clean Cache Error : " + f.getAbsolutePath());
+                }
+
+            }
+        }
     }
 
 
     // for decode with tempo
     /* tempo
-       0 : don't change
-       -50 : double duration
-       100 : half duration
-       new duration = duration / (1 + tempo%)
+        void SoundTouch::setTempo(double newTempo)
+        {
+            virtualTempo = newTempo;
+            calcEffectiveRateAndTempo();
+        }
+
+
+
+        // Sets new tempo control value as a difference in percents compared
+        // to the original tempo (-50 .. +100 %)
+        void SoundTouch::setTempoChange(double newTempo)
+        {
+            virtualTempo = 1.0 + 0.01 * newTempo;
+            calcEffectiveRateAndTempo();
+        }
 
    * */
-    private static final int TEMPO[] = {-50, -20, -10, 0, 20, 50, 100};
+    private static final int TEMPO_IGNORE = 100;
+
+    private static final int TEMPO[] = {40, 60, 80, TEMPO_IGNORE, 120, 150, 180};
 
     private static final int TEMPO_LENGTH = TEMPO.length;
 
@@ -450,6 +475,9 @@ public class PlayListEditActivity extends AppCompatActivity {
         mTempoSeekBar.setProgress(TEMPO_LENGTH / 2);
     }
 
+    private String getTempoPath() {
+        return MainActivity.mCachePath;
+    }
     private String getTempoFileName(String path) {
         StringBuffer sb = new StringBuffer();
         try {
@@ -490,8 +518,8 @@ public class PlayListEditActivity extends AppCompatActivity {
             // get Name
             String out = getTempoFileName(path);
 
-            params.out = MainActivity.mStorePath + String.format("/%s_%d.wav", out, tempo);
-            params.tmp = MainActivity.mStorePath + String.format("/%s.wav", out);
+            params.out = getTempoPath() + String.format("/%s_%d.wav", out, tempo);
+            params.tmp = getTempoPath() + String.format("/%s.wav", out);
 
             task.execute(params);
         } catch (Exception exp) {
@@ -532,7 +560,7 @@ public class PlayListEditActivity extends AppCompatActivity {
                 Log.e("Mp3ProcessTask", " Already Exist");
                 return 1; // already done
             }
-            if ( ( !tmp.exists()) && (false == MP3DecoderWithTempo.decoder(in, tmp)) ) {
+            if ( ( !tmp.exists()) && (false == MP3DecoderWithTempo.decoder_mpg123(in, tmp)) ) {
                 Log.e("Mp3ProcessTask", " Decoder Error");
                 tmp.delete();
                 return -1; // decoder error

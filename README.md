@@ -7,6 +7,8 @@ MP3 to Wav(libmad) :
 
   libmpg123
     http://www.mpg123.de/features.shtml
+    https://github.com/tulskiy/camomile
+    https://github.com/libgdx/libgdx
 
   libmp3lame
     https://github.com/intervigilium/Lame4Android

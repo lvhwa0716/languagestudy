@@ -193,4 +193,10 @@ public class WaveWriter {
         stream.write(sample);
         stream.write((sample >> 8));
     }
+
+    /* lvhwa0716@ */
+    public void write(byte[] src, int offset, int length) throws IOException {
+        mBytesWritten +=length;
+        mOutStream.write(src, offset, length);
+    }
 }
