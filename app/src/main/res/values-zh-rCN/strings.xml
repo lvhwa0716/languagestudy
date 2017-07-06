@@ -10,4 +10,6 @@
     <string name="tips_dupicatename">名称已经存在</string>
     <string name="tips_nameisempty">名称不能为空</string>
     <string name="set_speed"> 设置播放速度 </string>
+    <string name="converting"> 正在转化 &#8230;  </string>
+    <string name="scaning"> 读取中 &#8230;  </string>
 </resources>

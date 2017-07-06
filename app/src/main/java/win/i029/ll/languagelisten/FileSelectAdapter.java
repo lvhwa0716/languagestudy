@@ -229,7 +229,7 @@ public class FileSelectAdapter  extends BaseAdapter {
         public ScanFolderTask() {
             mProgressDialog = new ProgressDialog(mContext);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setMessage("... ...");
+            mProgressDialog.setMessage(mContext.getString(R.string.converting));
             mProgressDialog.setIndeterminate(false);
             mProgressDialog.setCancelable(false);
         }

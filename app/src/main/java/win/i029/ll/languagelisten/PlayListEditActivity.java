@@ -547,7 +547,7 @@ public class PlayListEditActivity extends AppCompatActivity {
             mProgressDialog = new ProgressDialog(PlayListEditActivity.this);
             mProgressDialog.setCancelable(false);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setMessage("... ...");
+            mProgressDialog.setMessage(getString(R.string.converting));
             mProgressDialog.setIndeterminate(false);
             errorCode = 0;
         }

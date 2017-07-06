@@ -10,5 +10,6 @@
     <string name="tips_dupicatename">Duplicate Name</string>
     <string name="tips_nameisempty">must not empty</string>
     <string name="set_speed"> Set Speed </string>
-
+    <string name="converting"> Convert &#8230;  </string>
+    <string name="scaning"> Scaning &#8230;  </string>
 </resources>
