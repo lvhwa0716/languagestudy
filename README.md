@@ -12,22 +12,25 @@
   
         http://www.mpg123.de/features.shtml
         
-        `https://github.com/tulskiy/camomile`                [Used for decode MP3 to PCM]
-        
+        https://github.com/tulskiy/camomile               [Used for decode MP3 to PCM]
+---------------------------------------------------------------------------------------
+
         https://github.com/libgdx/libgdx
     
 
 ###  libmp3lame
   
-        `https://github.com/intervigilium/Lame4Android`      [Used for package PCM to Wav file, add write bytes]
-        
+        https://github.com/intervigilium/Lame4Android      [Used for package PCM to Wav file, add write bytes]
+---------------------------------------------------------------------------------------
+
         https://github.com/intervigilium/libwave
         
         https://github.com/intervigilium/liblame
     
 
 ###    Speed Change :
-        `http://soundtouch.surina.net`           [Used for change Tempo, Wav to Wav]
+        http://soundtouch.surina.net           [Used for change Tempo, Wav to Wav]
+---------------------------------------------------------------------------------------
 
 
 ###    JNI build(git has a prebuilt share libray , ndk is not nessary) :
