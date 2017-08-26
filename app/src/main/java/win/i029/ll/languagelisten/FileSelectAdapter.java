@@ -229,7 +229,7 @@ public class FileSelectAdapter  extends BaseAdapter {
         public ScanFolderTask() {
             mProgressDialog = new ProgressDialog(mContext);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setMessage(mContext.getString(R.string.converting));
+            mProgressDialog.setMessage(mContext.getString(R.string.scaning));
             mProgressDialog.setIndeterminate(false);
             mProgressDialog.setCancelable(false);
         }
@@ -301,14 +301,8 @@ public class FileSelectAdapter  extends BaseAdapter {
                     return 1;
                 }
             } else {
-                if(first.getTitle().length() < second.getTitle().length()) {
-                    return -1;
-                } else if (first.getTitle().length() == second.getTitle().length()) {
-                    return first.getTitle().toLowerCase()
-                            .compareTo(second.getTitle().toLowerCase());
-                } else {
-                    return 1;
-                }
+                return first.getTitle().toLowerCase()
+                        .compareTo(second.getTitle().toLowerCase());
             }
         }
     }
