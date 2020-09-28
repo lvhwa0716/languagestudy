@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +18,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static String mStorePath = "";
     public static String mCachePath = "";
-    @BindView(R.id.id_playlist)
+
     ListView mPlayListView;
 
     private SharedPreferences mSharedPref;
@@ -40,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
+        mPlayListView = findViewById(R.id.id_playlist);
 
         mStorePath = getFilesDir().getPath();
         mCachePath = getCacheDir().getPath();

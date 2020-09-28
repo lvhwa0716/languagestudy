@@ -2,7 +2,6 @@ package win.i029.ll.languagelisten;
 
 import android.content.Intent;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,15 +10,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class FileSelectActivity extends AppCompatActivity {
 
-    @BindView(R.id.id_fileselectlist)
     ListView mFileSelectListView;
 
     private int mType = 1;
@@ -30,7 +30,8 @@ public class FileSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_select);
-        ButterKnife.bind(this);
+
+        mFileSelectListView = findViewById(R.id.id_fileselectlist);
         mType = getIntent().getIntExtra(PlayControl.KEY_SelectType,PlayControl.SelectType_Files);
         switch(mType) {
             case PlayControl.SelectType_Files :
@@ -97,6 +98,18 @@ public class FileSelectActivity extends AppCompatActivity {
                         fl.add(fitem.getFullPath());
                     }
                 }
+                Collections.sort(fl, new Comparator<String>() {
+
+                    @Override
+                    public int compare(String f1, String f2) {
+                        if(f1.length() < f2.length())
+                            return -1;
+                        else if (f1.length() > f2.length())
+                            return 1;
+                        else
+                            return f1.compareToIgnoreCase(f2);
+                    }
+                });
                 Intent n = new Intent();
                 n.putStringArrayListExtra(PlayControl.KEY_FileSelected, fl);
 

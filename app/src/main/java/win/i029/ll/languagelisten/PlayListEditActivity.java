@@ -2,11 +2,12 @@ package win.i029.ll.languagelisten;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -29,8 +30,7 @@ import java.security.MessageDigest;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PlayListEditActivity extends AppCompatActivity {
     private final String TAG = "PlayListEditActivity";
@@ -40,32 +40,17 @@ public class PlayListEditActivity extends AppCompatActivity {
 
     private final static int UPDATE_PROGRESS = 1000;
 
-    @BindView(R.id.id_playlistedit)
     ListView mPlayListEditView;
-
-    @BindView(R.id.id_playlist_control)
     LinearLayout mVoiceControlPanel;
-
-    @BindView(R.id.id_voice_progress)
     SeekBar mVoiceSeekBar;
-
-    @BindView(R.id.id_voice_tempo)
     SeekBar mTempoSeekBar;
-
-    @BindView(R.id.id_voice_prev)
     ImageButton mBtnVoicePrev;
-    @BindView(R.id.id_voice_play)
     ImageButton mBtnVoicePlay;
-    @BindView(R.id.id_voice_next)
     ImageButton mBtnVoiceNext;
-    @BindView((R.id.id_voice_info_name))
     TextView mVoiceTitle;
-
-    @BindView((R.id.id_voice_info_time))
     TextView mVoiceTime;
+    ImageButton mBtnVoiceRepeat;
 
-
-    private PlayControl mPlayControl;
     private PlayListEditAdapter mAdapter;
 
     private int mOperateType = PlayControl.ItemOperate_Play;
@@ -78,7 +63,6 @@ public class PlayListEditActivity extends AppCompatActivity {
 
     private int mPosition = 0;
 
-
     private Timer mTimer = null;
     private TimerTask mTimerTask = null;
     private Handler mHandler = null;
@@ -90,7 +74,22 @@ public class PlayListEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_play_list_edit);
-        ButterKnife.bind(this);
+
+        mPlayListEditView = findViewById(R.id.id_playlistedit);
+        mVoiceControlPanel = findViewById(R.id.id_playlist_control);
+        mVoiceSeekBar = findViewById(R.id.id_voice_progress);
+        mTempoSeekBar = findViewById(R.id.id_voice_tempo);
+        mBtnVoicePrev = findViewById(R.id.id_voice_prev);
+        mBtnVoicePlay = findViewById(R.id.id_voice_play);
+        mBtnVoiceNext = findViewById(R.id.id_voice_next);
+        mVoiceTitle = findViewById(R.id.id_voice_info_name);
+        mVoiceTime = findViewById(R.id.id_voice_info_time);
+        mBtnVoiceRepeat = findViewById(R.id.id_voice_repeat);
+
+        SharedPreferences sharedPreferences= getSharedPreferences("playlisteditactivity", Context.MODE_PRIVATE);
+        int repeat = sharedPreferences.getInt("repeat_type",0);
+        setRepeat(repeat);
+
         mTempoSeekBar.setMax(TEMPO_LENGTH - 1);
         mTempoSeekBar.setProgress(TEMPO_LENGTH / 2);
 
@@ -145,28 +144,21 @@ public class PlayListEditActivity extends AppCompatActivity {
         mBtnVoicePrev.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = load(mPosition - 1);
-                if (position >= 0) {
-                    resetTempo();
-                    mPosition = position;
-                    mAdapter.notifyDataSetChanged();
-                    mPlayListEditView.smoothScrollToPosition(mPosition);
-                    play();
-                }
+                prev();
             }
         });
 
         mBtnVoiceNext.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = load(mPosition + 1);
-                if (position >= 0) {
-                    resetTempo();
-                    mPosition = position;
-                    mAdapter.notifyDataSetChanged();
-                    mPlayListEditView.smoothScrollToPosition(mPosition);
-                    play();
-                }
+                next();
+            }
+        });
+
+        mBtnVoiceRepeat.setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setRepeat(-1);
             }
         });
 
@@ -342,7 +334,11 @@ public class PlayListEditActivity extends AppCompatActivity {
     }
 
     private int load(int pos) { // if success , return pos , or return -1
-        String path = pli.getItem(pos);
+        int size = pli.getCount();
+        if(size <= 0) {
+            return -1;
+        }
+        String path = pli.getItem((pos + size ) % size);
         if (path.isEmpty())
             return -1;
 
@@ -370,17 +366,46 @@ public class PlayListEditActivity extends AppCompatActivity {
     }
 
     private void play() {
-
-
         mVoicePlay.play();
         mBtnVoicePlay.setImageResource(android.R.drawable.ic_media_pause);
-
     }
 
+    private void prev() {
+        int position = load(mPosition - 1);
+        if (position >= 0) {
+            resetTempo();
+            mPosition = position;
+            mAdapter.notifyDataSetChanged();
+            mPlayListEditView.smoothScrollToPosition(mPosition);
+            play();
+        }
+    }
+    private void next() {
+        int position = load(mPosition + 1);
+        if (position >= 0) {
+            resetTempo();
+            mPosition = position;
+            mAdapter.notifyDataSetChanged();
+            mPlayListEditView.smoothScrollToPosition(mPosition);
+            play();
+        }
+    }
     private VoicePlay.OnEventListener mPlayerEventListener = new VoicePlay.OnEventListener() {
         public void onCompletion() {
             Log.i(TAG, " Completed");
             pause(true, 0);
+            switch (getRepeat()) {
+                case REPEAT_NONE:
+                    break;
+                case REPEAT_ONE:
+                    play();
+                    break;
+                case REPEAT_ALL:
+                    next();
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
@@ -428,19 +453,39 @@ public class PlayListEditActivity extends AppCompatActivity {
             mVoicePlay.release();
             mVoicePlay = null;
         }
-        File cachedDir = new File(getTempoPath());
-        for( File f : cachedDir.listFiles()) {
-            if (f.isFile() && f.getName().endsWith(".wav")) {
-                try {
-                    f.delete();
-                } catch (Exception e) {
-                    Log.e(TAG , "Clean Cache Error : " + f.getAbsolutePath());
-                }
 
-            }
-        }
+
     }
 
+    private int mRepeat = 0;
+    private static final int[] mRepeatIcon = new int[] {
+            R.drawable.ic_mp_repeat_off_btn,
+            R.drawable.ic_mp_repeat_once_btn,
+    //        R.drawable.ic_mp_repeat_all_btn
+    } ;
+
+    private static final int REPEAT_NONE = 0;
+    private static final int REPEAT_ONE = 1;
+    private static final int REPEAT_ALL = 2;
+
+    private void setRepeat(int type) {
+        int size = mRepeatIcon.length;
+        if(type >= 0) {
+            mRepeat = type % size;
+        } else {
+            mRepeat++;
+            mRepeat = mRepeat % size;
+            SharedPreferences sharedPreferences= getSharedPreferences("playlisteditactivity",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("repeat_type", mRepeat);
+            editor.commit();
+        }
+        mBtnVoiceRepeat.setBackground(getDrawable(mRepeatIcon[mRepeat]));
+    }
+
+    private int getRepeat() {
+        return mRepeat;
+    }
 
     // for decode with tempo
     /* tempo
@@ -525,8 +570,6 @@ public class PlayListEditActivity extends AppCompatActivity {
         } catch (Exception exp) {
             exp.printStackTrace();
         }
-
-
     }
 
     private class Mp3ProcessTask extends AsyncTask<Mp3ProcessTask.Parameters, Void, Integer> {

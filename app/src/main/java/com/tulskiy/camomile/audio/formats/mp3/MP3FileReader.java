@@ -1,12 +1,10 @@
 package com.tulskiy.camomile.audio.formats.mp3;
 
+import android.util.Log;
+
 import com.tulskiy.camomile.audio.model.AudioFileReader;
 import com.tulskiy.camomile.audio.model.Track;
 import org.jaudiotagger.audio.mp3.MP3File;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -15,7 +13,6 @@ import java.io.File;
  * Date: 5/14/12
  */
 public class MP3FileReader extends AudioFileReader {
-    private static final Logger log = LoggerFactory.getLogger("camomile");
 
     @Override
     protected Track read(Track track, File file) {
@@ -26,7 +23,7 @@ public class MP3FileReader extends AudioFileReader {
             copyTagFields(mp3File.getTag(), track);
             return track;
         } catch (Exception e) {
-            log.error("could not read tags for file: " + track.path, e);
+            Log.e("MP3FileReader","could not read tags for file: " + track.path, e);
         }
         return null;
     }
